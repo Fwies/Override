@@ -37,6 +37,9 @@
 #include "api.h"
 #include "lemlib/api.hpp"
 #include "drive.h"
+#include "intake.h"
+#include "lift.h"
+#include "liftPID.h"
 extern pros::Controller master;
 
 /**

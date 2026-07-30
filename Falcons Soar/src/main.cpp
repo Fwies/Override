@@ -54,7 +54,22 @@ void competition_initialize() {}
  * will be stopped. Re-enabling the robot will restart the task, not re-start it
  * from where it left off.
  */
-void autonomous() {}
+void autonomous() {
+
+
+chassis.calibrate();
+
+	//chassis.moveToPoint(0,12,2000,{},false);
+	pros::delay(100);
+	master.set_text(0, 0, std::to_string(chassis.getPose().theta));
+		chassis.moveToPoint(0,48,2000,{},false);
+		master.set_text(0, 0, std::to_string(chassis.getPose().theta));
+		chassis.moveToPoint(0,0,2000,{.forwards=false},false);
+
+	chassis.turnToHeading(90,1000,{},false);
+		chassis.turnToHeading(270,1000,{},false);
+		chassis.turnToHeading(0,1000,{},false);
+}
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -73,9 +88,13 @@ void opcontrol() {
 	
 	 // Creates a motor group with forwards port 5 and reversed ports 4 & 6
 
-
+	
 	while (true) {
+		
+		
 		driveLoop();
+		intakeLoop();
+		liftLoop();
 		pros::delay(10);                               // Run for 10 ms then update
 	}
 }
