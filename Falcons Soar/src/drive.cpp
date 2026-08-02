@@ -6,31 +6,31 @@ pros::Motor L3 ((int)13, pros::v5::MotorGears::blue, pros::MotorUnits::rotations
 pros::Motor R1 ((int)17, pros::v5::MotorGears::blue, pros::MotorUnits::rotations);
 pros::Motor R2 ((int)18, pros::v5::MotorGears::blue, pros::MotorUnits::rotations);
 pros::Motor R3 ((int)-12, pros::v5::MotorGears::blue, pros::MotorUnits::rotations);
-pros::MotorGroup leftDrive({13,-16,-19});    // Creates a motor group with forwards ports 1 & 3 and reversed port 2
+pros::MotorGroup leftDrive({13,-16,-19});    
 pros::MotorGroup rightDrive({-12,18,17});
 
 
 double input = 0;
-double speed = 1;
+double speed = 1; // multiplier for driver practice
 
 void driveLoop(){
-   //tank drive code
-    input = master.get_analog(ANALOG_LEFT_Y)*speed;
-	if(input>0){
-		input=(input*0.46456692913)+68;
-	}
+    //tank drive code
+    input = master.get_analog(ANALOG_LEFT_Y)*speed; //get the input
+	  if(input>0){
+		    input=(input*0.46456692913)+68; // add 68 as the low end of the curve doesnt have enough power to move the robot
+	  }
     if(input<0){
-		input=(input*0.46456692913)-68;
-	}
-	leftDrive.move_voltage(((input*input*input)*0.00585281132));
-	input = master.get_analog(ANALOG_RIGHT_Y)*speed;
-	if(input>0){
-		input=(input*0.46456692913)+68;
-	}
-	if(input<0){
-		input=(input*0.46456692913)-68;
+		    input=(input*0.46456692913)-68; // subtract if going backwards
+	  }
+	  leftDrive.move_voltage(((input*input*input)*0.00585281132)); // cube the input and divide it by a constant to make the max 12000 mv
+	  input = master.get_analog(ANALOG_RIGHT_Y)*speed; //repeat
+	  if(input>0){
+		    input=(input*0.46456692913)+68;
+	  }
+	  if(input<0){
+		    input=(input*0.46456692913)-68;
     }
-	rightDrive.move_voltage(((input*input*input)*0.00585281132));    
+	  rightDrive.move_voltage(((input*input*input)*0.00585281132));    
 }
 
 lemlib::Drivetrain drivetrain(&leftDrive, // left motor group

@@ -41,7 +41,9 @@ void disabled() {}
  * This task will exit when the robot is enabled and autonomous or opcontrol
  * starts.
  */
-void competition_initialize() {}
+void competition_initialize() {
+	chassis.calibrate();
+}
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
@@ -57,10 +59,13 @@ void competition_initialize() {}
 void autonomous() {
 
 
-chassis.calibrate();
 
-	//chassis.moveToPoint(0,12,2000,{},false);
-	pros::delay(100);
+
+	
+	
+}
+/*
+pros::delay(100);
 	master.set_text(0, 0, std::to_string(chassis.getPose().theta));
 		chassis.moveToPoint(0,48,2000,{},false);
 		master.set_text(0, 0, std::to_string(chassis.getPose().theta));
@@ -69,7 +74,7 @@ chassis.calibrate();
 	chassis.turnToHeading(90,1000,{},false);
 		chassis.turnToHeading(270,1000,{},false);
 		chassis.turnToHeading(0,1000,{},false);
-}
+*/
 
 /**
  * Runs the operator control code. This function will be started in its own task
@@ -91,7 +96,7 @@ void opcontrol() {
 	
 	while (true) {
 		
-		
+		//run all the subsystem loops
 		driveLoop();
 		intakeLoop();
 		liftLoop();
