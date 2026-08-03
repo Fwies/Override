@@ -14,8 +14,8 @@ liftPID pidLow(6,0,24,0); // pid parameters
 liftPID pidHigh(1,0,0,0);
 bool resetting = true;
 // limits all in centidegrees
-double homeHigh = 0;
-double homeLow=0;
+double homeHigh = 6000;
+double homeLow=-1000;
 double limitHigh =69500; //
 double limitLow = 12375; //
 double targetHigh = homeHigh;
@@ -49,36 +49,40 @@ void liftLoop(){
 
     // after 50 ms move the top arm up to free it from the intake
     if(increment==5){
-        targetHigh=8650;
-        targetLow=1406;
+        targetHigh=22000;
+       
     }
-
-    // after 150 ms tilt the claw and set the increment to -1 to wait for next input 
-    if(increment==20){
+    if(increment==45){
+        targetLow=1406;
         tilt.extend();
         increment=-1;
     }
 
+    // after 150 ms tilt the claw and set the increment to -1 to wait for next input 
+   
     // after new input and 300ms move the top arm up out of the way of the stack
-    if(increment==50){
+    if(increment==130){
         tilt.extend();
-        targetHigh=limitHigh;
-        targetLow=limitLow;
+        targetHigh=rotHigh.get_position()+20000;
+        targetLow=rotLow.get_position()+5000;
+        increment=-2;
         
     }
 
     // after 300 ms move the bottom lift to the bottom
-    if(increment==80){
+    if(increment==155){
         targetLow=homeLow;
     }
 
     // wait until bottom lift is close to the bottom to move the top arm to home
-    if(increment>80&&rotLow.get_position()<2000){
+    if(increment>155&&rotLow.get_position()<500){
         targetHigh=homeHigh;
+        tilt.retract();
+        increment=0;
     }
 
     // once the top arm is close to home untilt the claw for intaking
-    if(increment>80&&rotHigh.get_position()<6000){
+    if(increment>155&&rotHigh.get_position()<homeLow+20000){
         tilt.retract();
         increment=0;
     }
@@ -91,9 +95,14 @@ void liftLoop(){
             increment=1;
         }
         // on the repress start the return to home sequence and unclamp
-        else{
-            increment =21 ;
+        else if (increment==-1){
+            increment =100 ;
             clamp.retract();
+            targetHigh=targetHigh-5000;
+            targetLow=targetLow-1000;
+        }
+        else {
+            increment=154;
         }
         
     }
@@ -111,10 +120,7 @@ void liftLoop(){
         targetLow=homeLow;
     }
 
-    // return arms to home using the increment sequence
-    if(master.get_digital_new_press(DIGITAL_L2)){
-        increment==50;
-    }
+    
     
     
     if(master.get_digital(DIGITAL_UP)){
@@ -129,14 +135,14 @@ void liftLoop(){
     else{
         //liftHigh.move_velocity(0);
     }
-    if(master.get_digital(DIGITAL_RIGHT)){
+    if(master.get_digital(DIGITAL_L2)){
         targetLow+=200;
         targetHigh+=1000;
         
     }
-    else if(master.get_digital(DIGITAL_LEFT)){
-        targetLow+=200;
-        targetHigh+=1000;
+    else if(master.get_digital(DIGITAL_RIGHT)){
+        targetLow-=200;
+        targetHigh-=1000;
         
     }
     
