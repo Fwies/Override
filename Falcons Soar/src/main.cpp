@@ -57,8 +57,47 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
+pros::Task liftThread = pros::Task(liftThreadLoop);
+/*master.set_text(0, 0, std::to_string(chassis.getPose().theta));
+		chassis.moveToPoint(0,48,2000,{},false);
+		master.set_text(0, 0, std::to_string(chassis.getPose().theta));
+		chassis.moveToPoint(0,0,2000,{.forwards=false},false);*/
+		
+		chassis.moveToPoint(0,-10,1000,{.forwards=false},false);
+		
+		intake();
+		chassis.moveToPoint(1,-6,1000,{},false);
+		chassis.turnToPoint(8,-13,1000,{.forwards=false},false);
+		clampLiftTilt();
+		pros::delay(500);
+		chassis.moveToPoint(8,-13,2000,{.forwards=false},false);
+		pros::delay(200);
+		clamp.retract();
+		targetLow=targetLow-2500;
+		targetHigh=targetHigh-12500;
+		pros::delay(500);
+		clamp.extend();
+		pros::delay(200);
+		targetLow=targetLow+4000;
+		targetHigh=targetHigh+20000;
+		pros::delay(200);
+		chassis.moveToPoint(0,-5,1000,{},false);
+		chassis.turnToPoint(-10,-13,1000,{.forwards=false},false);
+		chassis.moveToPoint(-10,-13,1000,{.forwards=false},false);
+		targetLow=targetLow-2500;
+		targetHigh=targetHigh-12500;
+		pros::delay(200);
+		clamp.retract();
+		targetHigh=rotHigh.get_position()+20000;
+        targetLow=rotLow.get_position()+5000;
+            
+		
 
+		/*targetLow=5000;
+		targetHigh=25000;*/
+		
 
+		
 
 
 	

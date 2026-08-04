@@ -6,8 +6,8 @@ pros::Motor L3 ((int)13, pros::v5::MotorGears::blue, pros::MotorUnits::rotations
 pros::Motor R1 ((int)17, pros::v5::MotorGears::blue, pros::MotorUnits::rotations);
 pros::Motor R2 ((int)18, pros::v5::MotorGears::blue, pros::MotorUnits::rotations);
 pros::Motor R3 ((int)-12, pros::v5::MotorGears::blue, pros::MotorUnits::rotations);
-pros::MotorGroup leftDrive({13,-16,-19});    
-pros::MotorGroup rightDrive({-12,18,17});
+pros::MotorGroup leftDrive({-19,-16,13});    
+pros::MotorGroup rightDrive({17,18,-12});
 
 
 double input = 0;

@@ -22,19 +22,33 @@ double targetHigh = homeHigh;
 double targetLow = homeLow;
 int increment = 0; // variable to keep track of time for driver macros
 int resetCounter = 0;
+void clampLiftTilt(){
+        clamp.extend();
+        increment=1;
+    }
 void liftLoop(){
     if(resetting){
         liftLow.move_voltage(-12000);
-        liftHigh.move_voltage(-12000);
-        if(abs(liftLow.get_actual_velocity()) < 10 && abs(liftHigh.get_actual_velocity())<10){
+        //
+        if(abs(liftLow.get_actual_velocity()) < 20 && resetCounter<=10){
            resetCounter++;
         }
-        if(resetCounter >20){
-             resetting=false;
+        if(abs(liftHigh.get_actual_velocity()) < 20 && resetCounter>10){
+           resetCounter++;
+        }
+        if(resetCounter >10){
+             
             rotLow.reset_position();
+            liftHigh.move_voltage(-12000);
+            
+            
+            
+        }
+        if(resetCounter > 20){
+            resetting=false;
             rotHigh.reset_position();
-            liftLow.move_voltage(0);
             liftHigh.move_voltage(0);
+            liftLow.move_voltage(0);
             master.rumble("...");
         }
     }
@@ -91,8 +105,7 @@ void liftLoop(){
     if(master.get_digital_new_press(DIGITAL_L1)){
         // clamp and start the sequence
         if(increment==0){
-            clamp.extend();
-            increment=1;
+            clampLiftTilt();
         }
         // on the repress start the return to home sequence and unclamp
         else if (increment==-1){
@@ -160,5 +173,11 @@ void liftLoop(){
 
 
 
-
+    
+}
+void liftThreadLoop(void* param){
+    while(true){
+    liftLoop();
+    pros::delay(10);
+    }
 }
