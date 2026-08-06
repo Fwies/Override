@@ -23,10 +23,15 @@ double targetLow = homeLow;
 int increment = 0; // variable to keep track of time for driver macros
 int resetCounter = 0;
 void clampLiftTilt(){
-        clamp.extend();
+        clamp.retract();
         increment=1;
     }
+    void goHome(){
+    increment=154;
+    }
 void liftLoop(){
+
+    
     if(resetting){
         liftLow.move_voltage(-12000);
         //
@@ -91,12 +96,13 @@ void liftLoop(){
     // wait until bottom lift is close to the bottom to move the top arm to home
     if(increment>155&&rotLow.get_position()<500){
         targetHigh=homeHigh;
-        tilt.retract();
-        increment=0;
+        //tilt.retract();
+        //increment=0;
+        
     }
 
     // once the top arm is close to home untilt the claw for intaking
-    if(increment>155&&rotHigh.get_position()<homeLow+20000){
+    if(increment>155&&rotHigh.get_position()<homeLow+10000){
         tilt.retract();
         increment=0;
     }
@@ -110,12 +116,12 @@ void liftLoop(){
         // on the repress start the return to home sequence and unclamp
         else if (increment==-1){
             increment =100 ;
-            clamp.retract();
+            clamp.extend();
             targetHigh=targetHigh-5000;
             targetLow=targetLow-1000;
         }
         else {
-            increment=154;
+            goHome();
         }
         
     }

@@ -58,44 +58,105 @@ void competition_initialize() {
  */
 void autonomous() {
 pros::Task liftThread = pros::Task(liftThreadLoop);
-/*master.set_text(0, 0, std::to_string(chassis.getPose().theta));
-		chassis.moveToPoint(0,48,2000,{},false);
-		master.set_text(0, 0, std::to_string(chassis.getPose().theta));
-		chassis.moveToPoint(0,0,2000,{.forwards=false},false);*/
-		
-		chassis.moveToPoint(0,-10,1000,{.forwards=false},false);
-		
 		intake();
-		chassis.moveToPoint(1,-6,1000,{},false);
-		chassis.turnToPoint(8,-13,1000,{.forwards=false},false);
-		clampLiftTilt();
-		pros::delay(500);
-		chassis.moveToPoint(8,-13,2000,{.forwards=false},false);
-		pros::delay(200);
-		clamp.retract();
-		targetLow=targetLow-2500;
-		targetHigh=targetHigh-12500;
-		pros::delay(500);
-		clamp.extend();
-		pros::delay(200);
-		targetLow=targetLow+4000;
-		targetHigh=targetHigh+20000;
-		pros::delay(200);
-		chassis.moveToPoint(0,-5,1000,{},false);
-		chassis.turnToPoint(-10,-13,1000,{.forwards=false},false);
-		chassis.moveToPoint(-10,-13,1000,{.forwards=false},false);
-		targetLow=targetLow-2500;
-		targetHigh=targetHigh-12500;
-		pros::delay(200);
-		clamp.retract();
-		targetHigh=rotHigh.get_position()+20000;
-        targetLow=rotLow.get_position()+5000;
-            
+chassis.moveToPoint(0,-10,300,{.forwards=false},false);
+	chassis.moveToPoint(0,10,500,{.maxSpeed=80,.minSpeed=80},false);
+	chassis.moveToPoint(0,-10,300,{.forwards=false},false);
 		
+	chassis.moveToPoint(0,10,500,{.maxSpeed=80,.minSpeed=80},false);
+	chassis.moveToPoint(0,-5,1000,{.forwards=false},false);
+	clampLiftTilt();
+	
+	
+	chassis.moveToPoint(-2,-20,1000,{.forwards=false},false);
+	chassis.turnToPoint(-14.5,-20,1000,{.forwards=false},false);
+	chassis.moveToPoint(-14.5,-20,1000,{.forwards=false},false);
+	targetLow=targetLow-4000;
+	targetHigh=targetHigh-10000;
+	pros::delay(300);
+	clamp.extend();
+	pros::delay(200);
+	//targetHigh=targetHigh-5000;
+	targetLow=targetLow+4000;
+	targetHigh=targetHigh+10000;
+	pros::delay(400);
+	chassis.moveToPoint(-5,-4,1000,{},false);
+	goHome();
+	stoptake();
+	chassis.turnToHeading(275,1000,{},false);
+	
+	chassis.moveToPoint(-60,-4,3000,{.minSpeed=10,.earlyExitRange=10},false);
+	
+	chassis.moveToPoint(-71,-10,1000,{},false);
+	chassis.turnToPoint(-71,4,1000,{},false);
+	intake();
+	chassis.moveToPoint(-71,4,600,{},false);
+	pros::delay(3000);
+	chassis.moveToPoint(-68,-20,2000,{.forwards=false},false);
+	clampLiftTilt();
+	chassis.turnToPoint(-31,-20,1000,{.forwards=false},false);
+	targetLow=targetLow+4000;
+	targetHigh=targetHigh+20000;
+	chassis.moveToPoint(-31,-20,3000,{.forwards=false},false);
+	targetLow=targetLow-4000;
+	targetHigh=targetHigh-20000;
+	pros::delay(300);
+	clamp.extend();
+	targetLow=targetLow+2000;
+	targetHigh=targetHigh+10000;
+	pros::delay(400);
 
-		/*targetLow=5000;
-		targetHigh=25000;*/
-		
+	chassis.moveToPoint(-71,-10,3000,{},false);
+	goHome();
+	// go to matchloader rond 2
+	chassis.turnToPoint(-71,4,1000,{},false);
+	intake();
+	chassis.moveToPoint(-71,4,1000,{},false);
+	pros::delay(3000);
+	chassis.moveToPoint(-68,-20,2000,{.forwards=false},false);
+	clampLiftTilt();
+	chassis.turnToPoint(-31,-20,1000,{.forwards=false},false);
+	targetLow=targetLow+4000;
+	targetHigh=targetHigh+20000;
+	chassis.moveToPoint(-31,-20,3000,{.forwards=false},false);
+
+	//place 2nd preload
+	targetLow=targetLow-4000;
+	targetHigh=targetHigh-20000;
+	pros::delay(300);
+	clamp.extend();
+	targetLow=targetLow+2000;
+	targetHigh=targetHigh+10000;
+	pros::delay(400);
+
+	chassis.moveToPoint(-71,-10,3000,{},false);
+	goHome();
+
+
+
+	chassis.turnToPoint(-71,4,1000,{},false);
+	intake();
+	chassis.moveToPoint(-71,4,1000,{},false);
+	pros::delay(3000);
+	chassis.moveToPoint(-68,-20,2000,{.forwards=false},false);
+	clampLiftTilt();
+	chassis.turnToPoint(-31,-20,1000,{.forwards=false},false);
+	targetLow=targetLow+6000;
+	targetHigh=targetHigh+30000;
+	chassis.moveToPoint(-31,-20,3000,{.forwards=false},false);
+
+	targetLow=targetLow-4000;
+	targetHigh=targetHigh-20000;
+	pros::delay(300);
+	clamp.extend();
+	targetLow=targetLow+2000;
+	targetHigh=targetHigh+10000;
+	pros::delay(400);
+	
+
+
+
+
 
 		
 
@@ -129,6 +190,7 @@ pros::delay(100);
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+	clamp.extend();
 	
 	 // Creates a motor group with forwards port 5 and reversed ports 4 & 6
 

@@ -8,3 +8,4 @@ void clampLiftTilt();
 extern pros::adi::Pneumatics clamp;
 extern pros::Rotation rotLow;
 extern pros::Rotation rotHigh;
+void goHome();
