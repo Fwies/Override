@@ -1,11 +1,2 @@
 void liftLoop();
 void liftThreadLoop(void* param);
-extern int increment;
-extern double targetHigh;
-extern double targetLow;
-extern bool resetting;
-void clampLiftTilt();
-extern pros::adi::Pneumatics clamp;
-extern pros::Rotation rotLow;
-extern pros::Rotation rotHigh;
-void goHome();

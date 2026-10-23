@@ -40,6 +40,7 @@
 #include "intake.h"
 #include "lift.h"
 #include "liftPID.h"
+#include "autons.h"
 extern pros::Controller master;
 
 /**
